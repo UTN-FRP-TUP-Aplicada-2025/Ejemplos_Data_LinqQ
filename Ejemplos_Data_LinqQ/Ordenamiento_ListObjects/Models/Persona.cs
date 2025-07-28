@@ -14,6 +14,6 @@ public class Persona
 
     public override string ToString()
     {
-        return $"Nombre: {Nombre}, DNI: {DNI}, Edad: {Edad}";
+        return $"Nombre: {Nombre,25}, DNI: {DNI,10}, Edad: {Edad,10}";
     }
 }

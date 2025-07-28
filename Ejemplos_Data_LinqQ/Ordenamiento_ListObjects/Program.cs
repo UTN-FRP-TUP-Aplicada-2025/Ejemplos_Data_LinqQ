@@ -10,7 +10,7 @@ class Program
 {
     static void Main()
     {
-        // Lista de personas de ejemplo
+        #region Lista de personas de ejemplo
         List<Persona> personas = new List<Persona>
         {
             new Persona { Nombre = "Juan", DNI = 12345678, Edad = 30 },
@@ -24,45 +24,50 @@ class Program
         {
             Console.WriteLine(persona);
         }
+        #endregion
 
-        // MÉTODO 1: OrderBy con lambda (más común)
-        //var personasOrdenadas1 = personas.OrderBy(p => p.DNI).ToList();
+        #region MÉTODO 1: OrderBy con lambda(más común)
+        var personasOrdenadas1 = personas.OrderBy(p => p.DNI).ToList();
 
-        //Console.WriteLine("\nOrdenado por DNI (ascendente) - Método 1:");
-        //foreach (var persona in personasOrdenadas1)
-        //{
-        //    Console.WriteLine(persona);
-        //}
+        Console.WriteLine("\nOrdenado por DNI (ascendente) - Método 1:");
+        foreach (var persona in personasOrdenadas1)
+        {
+            Console.WriteLine(persona);
+        }
 
-        //#region MÉTODO 2: OrderByDescending para orden descendente
-        //var personasOrdenadas2 = personas.OrderByDescending(p => p.DNI).ToList();
+        #endregion
 
-        //Console.WriteLine("\nOrdenado por DNI (descendente):");
-        //foreach (var persona in personasOrdenadas2)
-        //{
-        //    Console.WriteLine(persona);
-        //}
-        //#endregion
+        #region MÉTODO 2: OrderByDescending para orden descendente
+        var personasOrdenadas2 = personas.OrderByDescending(p => p.DNI).ToList();
 
-        //// MÉTODO 3: Ordenar directamente la lista original (modifica la lista)
-        //personas.Sort((p1, p2) => p1.DNI.CompareTo(p2.DNI));
+        Console.WriteLine("\nOrdenado por DNI (descendente):");
+        foreach (var persona in personasOrdenadas2)
+        {
+            Console.WriteLine(persona);
+        }
+        #endregion
 
-        //Console.WriteLine("\nLista original después de Sort:");
-        //foreach (var persona in personas)
-        //{
-        //    Console.WriteLine(persona);
-        //}
+        #region MÉTODO 3: Ordenar directamente la lista original (modifica la lista)
+        personas.Sort((p1, p2) => p1.DNI.CompareTo(p2.DNI));
 
-        //// MÉTODO 4: Múltiples criterios de ordenamiento
-        //var personasMultiOrden = personas
-        //    .OrderBy(p => p.DNI)
-        //    .ThenBy(p => p.Nombre)
-        //    .ToList();
+        Console.WriteLine("\nLista original después de Sort:");
+        foreach (var persona in personas)
+        {
+            Console.WriteLine(persona);
+        }
+        #endregion
 
-        //Console.WriteLine("\nOrdenado por DNI y luego por Nombre:");
-        //foreach (var persona in personasMultiOrden)
-        //{
-        //    Console.WriteLine(persona);
-        //}
+        #region MÉTODO 4: Múltiples criterios de ordenamiento
+        var personasMultiOrden = personas
+            .OrderBy(p => p.DNI)
+            .ThenBy(p => p.Nombre)
+            .ToList();
+
+        Console.WriteLine("\nOrdenado por DNI y luego por Nombre:");
+        foreach (var persona in personasMultiOrden)
+        {
+            Console.WriteLine(persona);
+        }
+        #endregion
     }
 }

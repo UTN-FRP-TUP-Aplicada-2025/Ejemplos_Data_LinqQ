@@ -23,33 +23,33 @@ class Program
         Console.WriteLine("DataTable original:");
         MostrarDataTable(dtPersonas);
 
-        //#region MÉTODO 1: Usando DataView (más eficiente para DataTable)
-        //DataView dv = new DataView(dtPersonas);
-        //dv.Sort = "DNI ASC";  // o "DNI DESC" para descendente
-        //DataTable dtOrdenado1 = dv.ToTable();
+        #region MÉTODO 1: Usando DataView (más eficiente para DataTable)
+        DataView dv = new DataView(dtPersonas);
+        dv.Sort = "DNI ASC";  // o "DNI DESC" para descendente
+        DataTable dtOrdenado1 = dv.ToTable();
 
-        //Console.WriteLine("\nOrdenado por DNI (ascendente) - DataView:");
-        //MostrarDataTable(dtOrdenado1);
-        //#endregion
+        Console.WriteLine("\nOrdenado por DNI (ascendente) - DataView:");
+        MostrarDataTable(dtOrdenado1);
+        #endregion
 
-        //#region MÉTODO 2: Usando LINQ to DataTable (requiere System.Data.DataSetExtensions)
-        //var filasOrdenadas = dtPersonas.AsEnumerable()
-        //    .OrderBy(row => row.Field<int>("DNI"));
-        //DataTable dtOrdenado2 = filasOrdenadas.CopyToDataTable();
+        #region MÉTODO 2: Usando LINQ to DataTable (requiere System.Data.DataSetExtensions)
+        var filasOrdenadas = dtPersonas.AsEnumerable()
+            .OrderBy(row => row.Field<int>("DNI"));
+        DataTable dtOrdenado2 = filasOrdenadas.CopyToDataTable();
 
-        //Console.WriteLine("\nOrdenado por DNI (ascendente) - LINQ:");
-        //MostrarDataTable(dtOrdenado2);
-        //#endregion
+        Console.WriteLine("\nOrdenado por DNI (ascendente) - LINQ:");
+        MostrarDataTable(dtOrdenado2);
+        #endregion
 
-        //#region MÉTODO 3: Ordenar descendente con LINQ
-        //var filasDescendente = dtPersonas.AsEnumerable()
-        //    .OrderByDescending(row => row.Field<int>("DNI"));
-        //DataTable dtOrdenado3 = filasDescendente.CopyToDataTable();
+        #region MÉTODO 3: Ordenar descendente con LINQ
+        var filasDescendente = dtPersonas.AsEnumerable()
+            .OrderByDescending(row => row.Field<int>("DNI"));
+        DataTable dtOrdenado3 = filasDescendente.CopyToDataTable();
 
-        //Console.WriteLine("\nOrdenado por DNI (descendente) - LINQ:");
-        //MostrarDataTable(dtOrdenado3);
-        //#endregion
-        
+        Console.WriteLine("\nOrdenado por DNI (descendente) - LINQ:");
+        MostrarDataTable(dtOrdenado3);
+        #endregion
+
         #region MÉTODO 4: Select con OrderBy usando DataTable.Select()
         DataRow[] filasSeleccionadas = dtPersonas.Select("", "DNI ASC");
         DataTable dtOrdenado4 = dtPersonas.Clone(); // Copia la estructura
@@ -58,40 +58,39 @@ class Program
             dtOrdenado4.ImportRow(row);
         }
 
-        Console.WriteLine("\nOrdenado por DNI y luego por Nombre:");
+        Console.WriteLine("\nOrdenado por DNI (ascendente) - Select:");
         MostrarDataTable(dtOrdenado4);
         #endregion
 
-        //Console.WriteLine("\nOrdenado por DNI (ascendente) - Select:");
-        //MostrarDataTable(dtOrdenado4);
+        #region MÉTODO 5: Múltiples criterios con LINQ
+        var multiOrden = dtPersonas.AsEnumerable()
+            .OrderBy(row => row.Field<int>("DNI"))
+            .ThenBy(row => row.Field<string>("Nombre"));
+        DataTable dtMultiOrden = multiOrden.CopyToDataTable();
 
-        //// MÉTODO 5: Múltiples criterios con LINQ
-        //var multiOrden = dtPersonas.AsEnumerable()
-        //    .OrderBy(row => row.Field<int>("DNI"))
-        //    .ThenBy(row => row.Field<string>("Nombre"));
-        //DataTable dtMultiOrden = multiOrden.CopyToDataTable();
+        Console.WriteLine("\nOrdenado por DNI y luego por Nombre:");
+        MostrarDataTable(dtMultiOrden);
+        #endregion
 
-        //Console.WriteLine("\nOrdenado por DNI y luego por Nombre:");
-        //MostrarDataTable(dtMultiOrden);
+        #region MÉTODO 6: Filtro y ordenamiento combinado
+        var filtradoYOrdenado = dtPersonas.AsEnumerable()
+            .Where(row => row.Field<int>("Edad") > 25)
+            .OrderBy(row => row.Field<int>("DNI"));
 
-        //// MÉTODO 6: Filtro y ordenamiento combinado
-        //var filtradoYOrdenado = dtPersonas.AsEnumerable()
-        //    .Where(row => row.Field<int>("Edad") > 25)
-        //    .OrderBy(row => row.Field<int>("DNI"));
-
-        //if (filtradoYOrdenado.Any())
-        //{
-        //    DataTable dtFiltrado = filtradoYOrdenado.CopyToDataTable();
-        //    Console.WriteLine("\nFiltrado (Edad > 25) y ordenado por DNI:");
-        //    MostrarDataTable(dtFiltrado);
-        //}
+        if (filtradoYOrdenado.Any())
+        {
+            DataTable dtFiltrado = filtradoYOrdenado.CopyToDataTable();
+            Console.WriteLine("\nFiltrado (Edad > 25) y ordenado por DNI:");
+            MostrarDataTable(dtFiltrado);
+        }
+        #endregion
     }
 
     static void MostrarDataTable(DataTable dt)
     {
         foreach (DataRow row in dt.Rows)
         {
-            Console.WriteLine($"Nombre: {row["Nombre"]}, DNI: {row["DNI"]}, Edad: {row["Edad"]}");
+            Console.WriteLine($"Nombre: {row["Nombre"],25}, DNI: {row["DNI"],10}, Edad: {row["Edad"],10}");
         }
     }
 }
