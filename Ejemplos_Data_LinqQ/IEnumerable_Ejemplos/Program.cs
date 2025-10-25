@@ -1,5 +1,5 @@
 ﻿
-using Ordenamiento_ListObjects.Models;
+using Ejemplo_IEnumerable.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

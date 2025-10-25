@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ordenamiento_ListObjects.Models;
+namespace Ejemplo_IEnumerable.Models;
 
 public class Persona
 {
